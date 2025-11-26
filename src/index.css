@@ -2,7 +2,8 @@
   --bg-color: #f0f4f8;
   --primary-color: #6366f1;
   --text-color: #4b5563;
-  --clay-shadow: 
+  --error-color: #ef4444;
+  --clay-shadow:  
     8px 8px 16px #d1d9e6, 
     -8px -8px 16px #ffffff;
   --clay-shadow-inset: 

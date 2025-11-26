@@ -42,6 +42,7 @@ export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan }) => {
               <th>#</th>
               <th>Payment Date</th>
               <th>Payment</th>
+              <th>Additional Income</th>
               <th>Net Payment</th>
               <th>Principal</th>
               <th>Interest</th>
@@ -54,6 +55,9 @@ export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan }) => {
                 <td>{item.installmentNumber}</td>
                 <td>{item.paymentDate}</td>
                 <td>{fmt(item.paymentAmount)}</td>
+                <td style={{ color: '#2ecc71', fontWeight: 'bold' }}>
+                  {item.monthlyIncome > 0 ? `${fmt(item.monthlyIncome)}` : '-'}
+                </td>
                 <td style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>
                   {fmt(item.netPaymentAmount)}
                 </td>
@@ -64,7 +68,7 @@ export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan }) => {
             ))}
             {plan.schedule.length === 0 && (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                <td colSpan={8} style={{ textAlign: 'center', padding: '2rem' }}>
                   Enter details to see payment plan.
                 </td>
               </tr>

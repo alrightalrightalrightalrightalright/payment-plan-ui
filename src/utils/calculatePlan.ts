@@ -1,7 +1,15 @@
+export interface IncomePeriod {
+  id: string;
+  startDate: string;
+  endDate: string;
+  amount: number;
+}
+
 export interface PaymentPlanItem {
   installmentNumber: number;
   paymentDate: string;
   paymentAmount: number;
+  monthlyIncome: number;
   netPaymentAmount: number;
   interestAmount: number;
   principalAmount: number;
@@ -21,7 +29,7 @@ export const calculatePaymentPlan = (
   installmentCount: number,
   monthlyInterestRate: number = 1.5,
   startDate: string = new Date().toISOString().split('T')[0],
-  monthlyIncome: number = 0
+  incomePeriods: IncomePeriod[] = []
 ): PaymentPlanSummary => {
   if (cost <= 0 || termMonths <= 0 || installmentCount <= 0) {
     return {
@@ -89,6 +97,32 @@ export const calculatePaymentPlan = (
     // Clone start date and add months
     const date = new Date(start);
     date.setMonth(start.getMonth() + (i * periodInMonths));
+    
+    // Calculate income for this specific date
+    // We check if the payment date falls within any income period
+    // Payment Date check: Is it >= period.start AND <= period.end
+    // Comparison using strings (YYYY-MM-DD) or timestamps works.
+    // Let's use timestamps for safety.
+    const payTime = date.getTime();
+    
+    let monthlyIncome = 0;
+    
+    // Iterate to find the matching period.
+    // The requirement is: "consider newer payment period for that date".
+    // "Newer" implies the one added last to the list.
+    // So we iterate and if multiple match, we overwrite with the later one.
+    // Or simply: iterate forward and let the last match win.
+    // (Previous logic was summing +=, now we want assignment =)
+    
+    incomePeriods.forEach(period => {
+      const pStart = new Date(period.startDate).getTime();
+      const pEnd = new Date(period.endDate).getTime();
+      
+      if (payTime >= pStart && payTime <= pEnd) {
+        // Use '=' instead of '+=' to replace previous matches with newer ones
+        monthlyIncome = period.amount;
+      }
+    });
 
     const netPayment = currentPayment - monthlyIncome;
 
@@ -96,6 +130,7 @@ export const calculatePaymentPlan = (
       installmentNumber: i,
       paymentDate: date.toLocaleDateString('tr-TR'),
       paymentAmount: currentPayment,
+      monthlyIncome: monthlyIncome,
       netPaymentAmount: netPayment > 0 ? netPayment : 0,
       interestAmount: interestForPeriod,
       principalAmount: currentPrincipal,

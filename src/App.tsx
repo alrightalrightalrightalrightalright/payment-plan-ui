@@ -1,21 +1,21 @@
 import { useState, useMemo } from 'react';
 import { PropertyForm } from './components/PropertyForm';
 import { PaymentPlanTable } from './components/PaymentPlanTable';
-import { calculatePaymentPlan } from './utils/calculatePlan';
+import { calculatePaymentPlan, IncomePeriod } from './utils/calculatePlan';
 
 function App() {
   const [cost, setCost] = useState<number>(1250000);
   const [term, setTerm] = useState<number>(120);
   const [interestRate, setInterestRate] = useState<number>(2.79);
   const [startDate, setStartDate] = useState<string>('2026-01-01');
-  const [additionalIncome, setAdditionalIncome] = useState<number>(0);
+  const [incomePeriods, setIncomePeriods] = useState<IncomePeriod[]>([]);
 
   // Reactive calculation (Derived State)
   // We don't need useEffect here because the calculation is synchronous and fast.
   const plan = useMemo(() => {
     // Pass term as the installment count so they are always equal
-    return calculatePaymentPlan(cost, term, term, interestRate, startDate, additionalIncome);
-  }, [cost, term, interestRate, startDate, additionalIncome]);
+    return calculatePaymentPlan(cost, term, term, interestRate, startDate, incomePeriods);
+  }, [cost, term, interestRate, startDate, incomePeriods]);
 
   return (
     <div className="container">
@@ -30,8 +30,8 @@ function App() {
         setInterestRate={setInterestRate}
         startDate={startDate}
         setStartDate={setStartDate}
-        additionalIncome={additionalIncome}
-        setAdditionalIncome={setAdditionalIncome}
+        incomePeriods={incomePeriods}
+        setIncomePeriods={setIncomePeriods}
       />
       
       <PaymentPlanTable plan={plan} />
