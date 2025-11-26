@@ -7,6 +7,10 @@ interface PropertyFormProps {
   setTerm: (val: number) => void;
   interestRate: number;
   setInterestRate: (val: number) => void;
+  startDate: string;
+  setStartDate: (val: string) => void;
+  additionalIncome: number;
+  setAdditionalIncome: (val: number) => void;
 }
 
 export const PropertyForm: React.FC<PropertyFormProps> = ({
@@ -16,6 +20,10 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
   setTerm,
   interestRate,
   setInterestRate,
+  startDate,
+  setStartDate,
+  additionalIncome,
+  setAdditionalIncome,
 }) => {
   // Helper to format number with dots (Turkish style) e.g. 1.000.000
   const formatNumber = (val: number) => {
@@ -36,6 +44,12 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
     setCost(numericValue);
   };
 
+  const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value;
+    const numericValue = parseNumber(rawValue);
+    setAdditionalIncome(numericValue);
+  };
+
   return (
     <div className="clay-card">
       <h2>Property Information</h2>
@@ -54,6 +68,19 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
       </div>
 
       <div style={{ marginBottom: '1.5rem' }}>
+        <label htmlFor="income">Additional Monthly Income (₺)</label>
+        <input
+          id="income"
+          type="text"
+          inputMode="numeric"
+          className="clay-input"
+          value={additionalIncome === 0 ? '' : formatNumber(additionalIncome)}
+          onChange={handleIncomeChange}
+          placeholder="0"
+        />
+      </div>
+
+      <div style={{ marginBottom: '1.5rem' }}>
         <label htmlFor="rate">Interest Rate (% Monthly)</label>
         <input
           id="rate"
@@ -64,6 +91,17 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
           step="0.1"
           min="0"
           placeholder="0"
+        />
+      </div>
+
+      <div style={{ marginBottom: '1.5rem' }}>
+        <label htmlFor="startDate">Credit Start Date</label>
+        <input
+          id="startDate"
+          type="date"
+          className="clay-input"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
         />
       </div>
 

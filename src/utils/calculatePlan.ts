@@ -1,6 +1,8 @@
 export interface PaymentPlanItem {
   installmentNumber: number;
+  paymentDate: string;
   paymentAmount: number;
+  netPaymentAmount: number;
   interestAmount: number;
   principalAmount: number;
   remainingBalance: number;
@@ -17,7 +19,9 @@ export const calculatePaymentPlan = (
   cost: number,
   termMonths: number,
   installmentCount: number,
-  monthlyInterestRate: number = 1.5
+  monthlyInterestRate: number = 1.5,
+  startDate: string = new Date().toISOString().split('T')[0],
+  monthlyIncome: number = 0
 ): PaymentPlanSummary => {
   if (cost <= 0 || termMonths <= 0 || installmentCount <= 0) {
     return {
@@ -59,6 +63,9 @@ export const calculatePaymentPlan = (
   let remainingBalance = cost;
   const schedule: PaymentPlanItem[] = [];
   let totalInterest = 0;
+  
+  // Parse start date
+  const start = new Date(startDate);
 
   for (let i = 1; i <= installmentCount; i++) {
     const interestForPeriod = remainingBalance * periodRate;
@@ -78,9 +85,18 @@ export const calculatePaymentPlan = (
 
     totalInterest += interestForPeriod;
 
+    // Calculate payment date
+    // Clone start date and add months
+    const date = new Date(start);
+    date.setMonth(start.getMonth() + (i * periodInMonths));
+
+    const netPayment = currentPayment - monthlyIncome;
+
     schedule.push({
       installmentNumber: i,
+      paymentDate: date.toLocaleDateString('tr-TR'),
       paymentAmount: currentPayment,
+      netPaymentAmount: netPayment > 0 ? netPayment : 0,
       interestAmount: interestForPeriod,
       principalAmount: currentPrincipal,
       remainingBalance: remainingBalance
