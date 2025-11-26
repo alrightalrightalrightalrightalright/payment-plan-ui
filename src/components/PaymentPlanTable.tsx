@@ -3,32 +3,34 @@ import { PaymentPlanSummary } from '../utils/calculatePlan';
 
 interface PaymentPlanTableProps {
   plan: PaymentPlanSummary;
+  t: any;
+  language: string;
 }
 
-export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan }) => {
+export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan, t, language }) => {
   // Format currency helper
   const fmt = (n: number) => 
-    new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(n);
+    new Intl.NumberFormat(language === 'tr' ? 'tr-TR' : 'en-US', { style: 'currency', currency: 'TRY' }).format(n);
 
   return (
     <div className="clay-card">
-      <h2>Payment Plan</h2>
+      <h2>{t.paymentPlan}</h2>
       
       <div style={{ marginBottom: '2rem' }}>
         <div className="summary-item">
-          <span>Total Payment:</span>
+          <span>{t.totalPayment}:</span>
           <span className="summary-value" style={{ color: 'var(--primary-color)' }}>
             {fmt(plan.totalPayment)}
           </span>
         </div>
         <div className="summary-item">
-          <span>Total Interest:</span>
+          <span>{t.totalInterest}:</span>
           <span className="summary-value">
             {fmt(plan.totalInterest)}
           </span>
         </div>
         <div className="summary-item">
-          <span>Est. Installment Amount:</span>
+          <span>{t.estInstallment}:</span>
           <span className="summary-value">
             {fmt(plan.installmentAmount)}
           </span>
@@ -39,14 +41,14 @@ export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan }) => {
         <table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>Payment Date</th>
-              <th>Payment</th>
-              <th>Additional Income</th>
-              <th>Net Payment</th>
-              <th>Principal</th>
-              <th>Interest</th>
-              <th>Balance</th>
+              <th>{t.installmentNo}</th>
+              <th>{t.paymentDate}</th>
+              <th>{t.payment}</th>
+              <th>{t.additionalIncome}</th>
+              <th>{t.netPayment}</th>
+              <th>{t.principal}</th>
+              <th>{t.interest}</th>
+              <th>{t.balance}</th>
             </tr>
           </thead>
           <tbody>
@@ -69,7 +71,7 @@ export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan }) => {
             {plan.schedule.length === 0 && (
               <tr>
                 <td colSpan={8} style={{ textAlign: 'center', padding: '2rem' }}>
-                  Enter details to see payment plan.
+                  {t.emptyState}
                 </td>
               </tr>
             )}

@@ -12,6 +12,7 @@ interface PropertyFormProps {
   setStartDate: (val: string) => void;
   incomePeriods: IncomePeriod[];
   setIncomePeriods: (periods: IncomePeriod[]) => void;
+  t: any;
 }
 
 export const PropertyForm: React.FC<PropertyFormProps> = ({
@@ -25,6 +26,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
   setStartDate,
   incomePeriods,
   setIncomePeriods,
+  t,
 }) => {
   // Local state for new period form
   const [newPeriodStart, setNewPeriodStart] = useState(startDate);
@@ -102,10 +104,10 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
 
   return (
     <div className="clay-card">
-      <h2>Property Information</h2>
+      <h2>{t.propertyInfo}</h2>
       
       <div style={{ marginBottom: '1.5rem' }}>
-        <label htmlFor="cost">Property Cost (₺)</label>
+        <label htmlFor="cost">{t.propertyCost}</label>
         <input
           id="cost"
           type="text"
@@ -118,7 +120,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
       </div>
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <label>Additional Income Periods</label>
+        <label>{t.incomePeriods}</label>
         <div style={{ background: 'rgba(255,255,255,0.5)', padding: '1rem', borderRadius: '1rem', marginTop: '0.5rem' }}>
           {/* List existing periods */}
           {incomePeriods.length > 0 && (
@@ -143,7 +145,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <div style={{ flex: 1 }}>
-                <label style={{ fontSize: '0.8rem' }}>Start</label>
+                <label style={{ fontSize: '0.8rem' }}>{t.start}</label>
                 <input 
                   type="date" 
                   className="clay-input" 
@@ -153,7 +155,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <label style={{ fontSize: '0.8rem' }}>End</label>
+                <label style={{ fontSize: '0.8rem' }}>{t.end}</label>
                 <input 
                   type="date" 
                   className="clay-input" 
@@ -164,7 +166,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
               </div>
             </div>
             <div>
-              <label style={{ fontSize: '0.8rem' }}>Amount (₺)</label>
+              <label style={{ fontSize: '0.8rem' }}>{t.amount}</label>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <input
                   type="text"
@@ -179,7 +181,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
                   onClick={addIncomePeriod}
                   style={{ background: 'var(--primary-color)', color: 'white', border: 'none', borderRadius: '1rem', padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 'bold' }}
                 >
-                  Add
+                  {t.add}
                 </button>
               </div>
             </div>
@@ -188,7 +190,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
       </div>
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <label htmlFor="rate">Interest Rate (% Monthly)</label>
+        <label htmlFor="rate">{t.interestRate}</label>
         <input
           id="rate"
           type="number"
@@ -202,7 +204,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
       </div>
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <label htmlFor="startDate">Credit Start Date</label>
+        <label htmlFor="startDate">{t.creditStartDate}</label>
         <input
           id="startDate"
           type="date"
@@ -214,7 +216,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
 
       <div style={{ marginBottom: '1.5rem' }}>
         <div className="summary-item">
-          <label htmlFor="term">Payment Term (Months)</label>
+          <label htmlFor="term">{t.paymentTerm}</label>
           <span className="summary-value">{term}</span>
         </div>
         <input
