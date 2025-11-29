@@ -106,33 +106,80 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
     <div className="clay-card">
       <h2>{t.propertyInfo}</h2>
       
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label htmlFor="cost">{t.propertyCost}</label>
-        <input
-          id="cost"
-          type="text"
-          inputMode="numeric"
-          className="clay-input"
-          value={cost === 0 ? '' : formatNumber(cost)}
-          onChange={handleCostChange}
-          placeholder="0"
-        />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+        <div>
+          <label htmlFor="cost" style={{ fontSize: '0.9rem' }}>{t.propertyCost}</label>
+          <input
+            id="cost"
+            type="text"
+            inputMode="numeric"
+            className="clay-input"
+            value={cost === 0 ? '' : formatNumber(cost)}
+            onChange={handleCostChange}
+            placeholder="0"
+            style={{ padding: '0.75rem', marginBottom: 0 }}
+          />
+        </div>
+        <div>
+          <label htmlFor="rate" style={{ fontSize: '0.9rem' }}>{t.interestRate}</label>
+          <input
+            id="rate"
+            type="number"
+            className="clay-input"
+            value={interestRate === 0 ? '' : interestRate}
+            onChange={(e) => setInterestRate(Number(e.target.value))}
+            step="0.1"
+            min="0"
+            placeholder="0"
+            style={{ padding: '0.75rem', marginBottom: 0 }}
+          />
+        </div>
       </div>
 
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label>{t.incomePeriods}</label>
-        <div style={{ background: 'rgba(255,255,255,0.5)', padding: '1rem', borderRadius: '1rem', marginTop: '0.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+        <div>
+          <label htmlFor="startDate" style={{ fontSize: '0.9rem' }}>{t.creditStartDate}</label>
+          <input
+            id="startDate"
+            type="date"
+            className="clay-input"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            style={{ padding: '0.75rem', marginBottom: 0 }}
+          />
+        </div>
+        <div>
+          <div className="summary-item" style={{ marginBottom: '0.2rem' }}>
+            <label htmlFor="term" style={{ fontSize: '0.9rem', marginBottom: 0 }}>{t.paymentTerm}</label>
+            <span className="summary-value" style={{ fontSize: '0.9rem' }}>{term}</span>
+          </div>
+          <input
+            id="term"
+            type="range"
+            className="clay-slider"
+            min="0"
+            max={validTerms.length - 1}
+            value={currentSliderIndex}
+            onChange={handleSliderChange}
+            style={{ margin: '0.5rem 0' }}
+          />
+        </div>
+      </div>
+
+      <div style={{ marginBottom: '1rem' }}>
+        <label style={{ fontSize: '0.9rem' }}>{t.incomePeriods}</label>
+        <div style={{ background: 'rgba(255,255,255,0.5)', padding: '0.75rem', borderRadius: '1rem', marginTop: '0.25rem' }}>
           {/* List existing periods */}
           {incomePeriods.length > 0 && (
-            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '1rem' }}>
+            <ul style={{ listStyle: 'none', padding: 0, marginBottom: '0.75rem' }}>
               {incomePeriods.map(p => (
-                <li key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
+                <li key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem', fontSize: '0.85rem' }}>
                   <span>
-                    {p.startDate} to {p.endDate}: <strong>{formatNumber(p.amount)} ₺</strong>
+                    {p.startDate} - {p.endDate}: <strong>{formatNumber(p.amount)} ₺</strong>
                   </span>
                   <button 
                     onClick={() => removeIncomePeriod(p.id)}
-                    style={{ background: 'var(--error-color)', color: 'white', border: 'none', borderRadius: '0.5rem', padding: '0.25rem 0.5rem', cursor: 'pointer' }}
+                    style={{ background: 'var(--error-color)', color: 'white', border: 'none', borderRadius: '0.5rem', padding: '0.1rem 0.4rem', cursor: 'pointer', fontSize: '0.8rem' }}
                   >
                     X
                   </button>
@@ -145,89 +192,43 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <div style={{ flex: 1 }}>
-                <label style={{ fontSize: '0.8rem' }}>{t.start}</label>
                 <input 
                   type="date" 
                   className="clay-input" 
                   value={newPeriodStart}
                   onChange={(e) => setNewPeriodStart(e.target.value)}
-                  style={{ padding: '0.5rem' }}
+                  style={{ padding: '0.5rem', fontSize: '0.8rem', marginBottom: 0 }}
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <label style={{ fontSize: '0.8rem' }}>{t.end}</label>
                 <input 
                   type="date" 
                   className="clay-input" 
                   value={newPeriodEnd}
                   onChange={(e) => setNewPeriodEnd(e.target.value)}
-                  style={{ padding: '0.5rem' }}
+                  style={{ padding: '0.5rem', fontSize: '0.8rem', marginBottom: 0 }}
                 />
               </div>
             </div>
-            <div>
-              <label style={{ fontSize: '0.8rem' }}>{t.amount}</label>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  className="clay-input"
-                  value={newPeriodAmount === 0 ? '' : formatNumber(newPeriodAmount)}
-                  onChange={handleNewAmountChange}
-                  placeholder="0"
-                  style={{ flex: 1 }}
-                />
-                <button 
-                  onClick={addIncomePeriod}
-                  style={{ background: 'var(--primary-color)', color: 'white', border: 'none', borderRadius: '1rem', padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                  {t.add}
-                </button>
-              </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <input
+                type="text"
+                inputMode="numeric"
+                className="clay-input"
+                value={newPeriodAmount === 0 ? '' : formatNumber(newPeriodAmount)}
+                onChange={handleNewAmountChange}
+                placeholder={t.amount}
+                style={{ flex: 1, padding: '0.5rem', fontSize: '0.8rem', marginBottom: 0 }}
+              />
+              <button 
+                onClick={addIncomePeriod}
+                style={{ background: 'var(--primary-color)', color: 'white', border: 'none', borderRadius: '0.75rem', padding: '0 1rem', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem' }}
+              >
+                {t.add}
+              </button>
             </div>
           </div>
         </div>
-      </div>
-
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label htmlFor="rate">{t.interestRate}</label>
-        <input
-          id="rate"
-          type="number"
-          className="clay-input"
-          value={interestRate === 0 ? '' : interestRate}
-          onChange={(e) => setInterestRate(Number(e.target.value))}
-          step="0.1"
-          min="0"
-          placeholder="0"
-        />
-      </div>
-
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label htmlFor="startDate">{t.creditStartDate}</label>
-        <input
-          id="startDate"
-          type="date"
-          className="clay-input"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-      </div>
-
-      <div style={{ marginBottom: '1.5rem' }}>
-        <div className="summary-item">
-          <label htmlFor="term">{t.paymentTerm}</label>
-          <span className="summary-value">{term}</span>
-        </div>
-        <input
-          id="term"
-          type="range"
-          className="clay-slider"
-          min="0"
-          max={validTerms.length - 1}
-          value={currentSliderIndex}
-          onChange={handleSliderChange}
-        />
       </div>
     </div>
   );

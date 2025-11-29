@@ -9,13 +9,13 @@ interface PaymentPlanTableProps {
 
 export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan, t, language }) => {
   // Format currency helper
-  const fmt = (n: number) => 
+  const fmt = (n: number) =>
     new Intl.NumberFormat(language === 'tr' ? 'tr-TR' : 'en-US', { style: 'currency', currency: 'TRY' }).format(n);
 
   return (
     <div className="clay-card">
       <h2>{t.paymentPlan}</h2>
-      
+
       <div style={{ marginBottom: '2rem' }}>
         <div className="summary-item">
           <span>{t.totalPayment}:</span>
@@ -37,7 +37,7 @@ export const PaymentPlanTable: React.FC<PaymentPlanTableProps> = ({ plan, t, lan
         </div>
       </div>
 
-      <div style={{ overflowX: 'auto', maxHeight: '400px', overflowY: 'auto' }}>
+      <div style={{ overflowX: 'auto', maxHeight: '600px', overflowY: 'auto' }}>
         <table>
           <thead>
             <tr>
