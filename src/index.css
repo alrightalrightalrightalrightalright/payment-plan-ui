@@ -113,6 +113,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   margin-top: 1rem;
+  table-layout: fixed;
 }
 
 th,
@@ -139,6 +140,7 @@ tr:hover td {
 tbody tr:nth-child(even) td {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
 
 .summary-item {
   display: flex;

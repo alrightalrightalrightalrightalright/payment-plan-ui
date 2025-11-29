@@ -80,7 +80,7 @@ function App() {
   return (
     <div className="container" style={{ position: 'relative' }}>
       <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}>
-        <button 
+        <button
           onClick={() => setLanguage(prev => prev === 'tr' ? 'en' : 'tr')}
           style={{
             padding: '0.5rem 1rem',
@@ -98,7 +98,7 @@ function App() {
       </div>
 
       <h1>{t.title}</h1>
-      
+
       <PropertyForm
         cost={cost}
         setCost={setCost}
@@ -112,7 +112,7 @@ function App() {
         setIncomePeriods={setIncomePeriods}
         t={t}
       />
-      
+
       <PaymentPlanTable plan={plan} t={t} language={language} />
     </div>
   );

@@ -46,6 +46,20 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
     return cleaned ? Number(cleaned) : 0;
   };
 
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>, setDate: (val: string) => void) => {
+    const val = e.target.value;
+    // val is usually YYYY-MM-DD
+    if (!val) {
+      setDate(val);
+      return;
+    }
+    const parts = val.split('-');
+    if (parts[0] && parts[0].length > 4) {
+      return; // Ignore if year is more than 4 digits
+    }
+    setDate(val);
+  };
+
   const handleCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
     const numericValue = parseNumber(rawValue);
@@ -60,14 +74,14 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
 
   const addIncomePeriod = () => {
     if (newPeriodAmount <= 0 || !newPeriodStart || !newPeriodEnd) return;
-    
+
     const newPeriod: IncomePeriod = {
       id: Math.random().toString(36).substr(2, 9),
       startDate: newPeriodStart,
       endDate: newPeriodEnd,
       amount: newPeriodAmount,
     };
-    
+
     setIncomePeriods([...incomePeriods, newPeriod]);
     setNewPeriodAmount(0); // Reset amount but keep dates for easier consecutive entry
   };
@@ -93,8 +107,8 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
 
   // Find index for current value to control slider
   // Default to index of 120 if not found, or nearest
-  const currentSliderIndex = validTerms.indexOf(term) !== -1 
-    ? validTerms.indexOf(term) 
+  const currentSliderIndex = validTerms.indexOf(term) !== -1
+    ? validTerms.indexOf(term)
     : validTerms.findIndex(t => t >= term);
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +119,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
   return (
     <div className="clay-card">
       <h2>{t.propertyInfo}</h2>
-      
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
         <div>
           <label htmlFor="cost" style={{ fontSize: '0.9rem' }}>{t.propertyCost}</label>
@@ -144,7 +158,8 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
             type="date"
             className="clay-input"
             value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(e) => handleDateChange(e, setStartDate)}
+            max="9999-12-31"
             style={{ padding: '0.75rem', marginBottom: 0 }}
           />
         </div>
@@ -177,7 +192,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
                   <span>
                     {p.startDate} - {p.endDate}: <strong>{formatNumber(p.amount)} ₺</strong>
                   </span>
-                  <button 
+                  <button
                     onClick={() => removeIncomePeriod(p.id)}
                     style={{ background: 'var(--error-color)', color: 'white', border: 'none', borderRadius: '0.5rem', padding: '0.1rem 0.4rem', cursor: 'pointer', fontSize: '0.8rem' }}
                   >
@@ -187,25 +202,27 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
               ))}
             </ul>
           )}
-          
+
           {/* Add new period form */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <div style={{ flex: 1 }}>
-                <input 
-                  type="date" 
-                  className="clay-input" 
+                <input
+                  type="date"
+                  className="clay-input"
                   value={newPeriodStart}
-                  onChange={(e) => setNewPeriodStart(e.target.value)}
+                  onChange={(e) => handleDateChange(e, setNewPeriodStart)}
+                  max="9999-12-31"
                   style={{ padding: '0.5rem', fontSize: '0.8rem', marginBottom: 0 }}
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <input 
-                  type="date" 
-                  className="clay-input" 
+                <input
+                  type="date"
+                  className="clay-input"
                   value={newPeriodEnd}
-                  onChange={(e) => setNewPeriodEnd(e.target.value)}
+                  onChange={(e) => handleDateChange(e, setNewPeriodEnd)}
+                  max="9999-12-31"
                   style={{ padding: '0.5rem', fontSize: '0.8rem', marginBottom: 0 }}
                 />
               </div>
@@ -220,7 +237,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
                 placeholder={t.amount}
                 style={{ flex: 1, padding: '0.5rem', fontSize: '0.8rem', marginBottom: 0 }}
               />
-              <button 
+              <button
                 onClick={addIncomePeriod}
                 style={{ background: 'var(--primary-color)', color: 'white', border: 'none', borderRadius: '0.75rem', padding: '0 1rem', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem' }}
               >
