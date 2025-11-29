@@ -120,7 +120,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
     <div className="clay-card">
       <h2>{t.propertyInfo}</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+      <div className="form-row">
         <div>
           <label htmlFor="cost" style={{ fontSize: '0.9rem' }}>{t.propertyCost}</label>
           <input
@@ -150,7 +150,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+      <div className="form-row">
         <div>
           <label htmlFor="startDate" style={{ fontSize: '0.9rem' }}>{t.creditStartDate}</label>
           <input
