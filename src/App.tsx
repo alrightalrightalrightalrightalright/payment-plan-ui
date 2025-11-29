@@ -7,7 +7,7 @@ export type Language = 'tr' | 'en';
 
 export const translations = {
   tr: {
-    title: 'Ödeme Planı Hesaplayıcı',
+    title: 'Kredi Mimarı',
     propertyInfo: 'Mülk Bilgileri',
     propertyCost: 'Mülk Fiyatı (₺)',
     incomePeriods: 'Ek Gelir Dönemleri',
@@ -33,7 +33,7 @@ export const translations = {
     emptyState: 'Ödeme planını görmek için detayları giriniz.',
   },
   en: {
-    title: 'Payment Plan Calculator',
+    title: 'Credit Architect',
     propertyInfo: 'Property Information',
     propertyCost: 'Property Cost (₺)',
     incomePeriods: 'Additional Income Periods',
